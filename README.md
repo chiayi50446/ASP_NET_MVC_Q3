@@ -49,3 +49,4 @@
 
 - 使用 ViewModel
 - 區分 View, Controller, 與 Model 的職責
+- 使用 Interface 實作資料存取
