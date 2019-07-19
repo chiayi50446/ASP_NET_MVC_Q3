@@ -1,11 +1,6 @@
-﻿@model IEnumerable<ASP_NET_MVC_Q3.Data.Product>
-
-@{
-    Layout = null;
-}
-
+﻿@model ASP_NET_MVC_Q3.ViewModels.ProductViewModel
+@using System.Web.Mvc.Html
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -13,28 +8,83 @@
 </head>
 <body>
     <h2>List</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>ProductName</th>
-                <th>Locale</th>
-                <th>CreateDate</th>
-                <th>UpdateDate</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <div class="left_side">
+        <div>
+            @{
+                <a href="javascript:;" class="button03 jq_addUser" data-link="@Url.Action("addProduct")">
+                    <span class="add size4 icon"></span>
+                    Add Product
+                </a>
+            }
+        </div>
+    </div>
+    <div id="tableContainer">
+        <table cellspacing="0" cellpadding="0" class="table03">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>ProductName</th>
+                    <th>Locale</th>
+                    <th>CreateDate</th>
+                    <th>UpdateDate</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.productList)
+                {
                 <tr>
                     <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@item.Locale</td>
-                    <td>@item.CreateDate</td>
-                    <td>@item.UpdateDate</td>
+                    <td>@item.CreateDate.ToString("yyyy/MM/dd HH:mm:ss")</td>
+                    <td>
+                        @{
+                            if (item.UpdateDate == null)
+                            {
+                                <text></text>
+                            }
+                            else
+                            {
+                                @item.UpdateDate.Value.ToString("yyyy/MM/dd HH:mm:ss")
+                            }
+                        }
+                    </td>
+                    <td class="align_c">
+                            <div class="opencontent action_box right box01">
+                                <ul style="min-width: 180px;">
+                                    <span>
+                                        <li>
+                                            <a href="javascript:;" class="jq_UpdateUser"
+                                               data-link="@Url.Action("editProduct", new { productID = item.Id })">
+                                                Edit
+                                            </a>
+                                        </li>
+                                    </span>
+                                    <span>
+                                        <li>
+                                            @Html.ActionLink("Delete", "deleteProduct", new { productID = item.Id }, new { onclick = "return confirm('Are sure wants to delete?');" })
+                                        </li>
+                                    </span>
+                                </ul>
+                        </div>
+                    </td>
                 </tr>
-            }
-        </tbody>
-    </table>
+                }
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
+<script>
+    $(document).on('click', '.jq_addUser', function () {
+        let $link = $(this),
+            url = $link.attr("data-link");
+        $.colorbox({ iframe: true, href: url, height: "400px", width: "700px" });
+    })
+    $(document).on('click', '.jq_UpdateUser', function () {
+        let $link = $(this),
+            url = $link.attr("data-link");
+        $.colorbox({ iframe: true, href: url, height: "400px", width: "700px" });
+    })
+</script>
