@@ -8,7 +8,7 @@ namespace ASP_NET_MVC_Q3.ViewModels
 {
     public class ProductViewModel
     {
-        public List<Product> productList { get; set; }
+        public List<Product> ProductList { get; set; }
     }
 
     public class SimpleProductViewModel
@@ -16,6 +16,6 @@ namespace ASP_NET_MVC_Q3.ViewModels
         public int Id { get; set; }
         public string Name { get; set; }
         public string Locale { get; set; }
-        public List<String> defaultLocale = new List<string>() { "US", "DE", "CA", "ES", "FR", "JP" };
+        public List<String> DefaultLocale = new List<string>() { "US", "DE", "CA", "ES", "FR", "JP" };
     }
 }

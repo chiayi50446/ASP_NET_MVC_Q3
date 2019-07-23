@@ -12,54 +12,54 @@ namespace ASP_NET_MVC_Q3.Controllers
 {
     public class ProductController : Controller
     {
-        private IProductRepository productRepository;
-        private ProductViewModel product;
-        private SimpleProductViewModel simpleProduct;
+        private IProductRepository _productRepository;
+        private ProductViewModel _product;
+        private SimpleProductViewModel _simpleProduct;
         public ProductController()
         {
-            product = new ProductViewModel();
-            productRepository = new ProductRepository(product);
-            simpleProduct = new SimpleProductViewModel();
+            _product = new ProductViewModel();
+            _productRepository = new ProductRepository(_product);
+            _simpleProduct = new SimpleProductViewModel();
         }
         public ActionResult List()
         {
-            product.productList = productRepository.GetAll().ToList();
-            return View(product);
+            _product.ProductList = _productRepository.GetAll().ToList();
+            return View(_product);
         }
 
-        public ActionResult addProduct()
+        public ActionResult AddProduct()
         {
             ViewBag.IsColorbox = true;
-            ViewBag.DefaultLocale = productRepository.GetLocaleList(simpleProduct);
+            ViewBag.DefaultLocale = _productRepository.GetLocaleList(_simpleProduct);
             return View();
         }
         [HttpPost]
-        public ActionResult addProduct(SimpleProductViewModel data)
+        public ActionResult AddProduct(SimpleProductViewModel data)
         {
-            productRepository.Create(data);
+            _productRepository.Create(data);
             string locationUrl = "<script>parent.location.href='" + Url.Action(nameof(List)) + "'</script>";
             return Content(locationUrl);
         }
-        public ActionResult editProduct(int productID)
+        public ActionResult EditProduct(int productID)
         {
             ViewBag.IsColorbox = true;
-            ViewBag.DefaultLocale = productRepository.GetLocaleList(simpleProduct);
-            Product source = productRepository.Get(productID);
-            simpleProduct.Id = source.Id;
-            simpleProduct.Locale = source.Locale;
-            simpleProduct.Name = source.Name;
-            return View(simpleProduct);
+            ViewBag.DefaultLocale = _productRepository.GetLocaleList(_simpleProduct);
+            Product source = _productRepository.Get(productID);
+            _simpleProduct.Id = source.Id;
+            _simpleProduct.Locale = source.Locale;
+            _simpleProduct.Name = source.Name;
+            return View(_simpleProduct);
         }
         [HttpPost]
-        public ActionResult editProduct(SimpleProductViewModel data)
+        public ActionResult EditProduct(SimpleProductViewModel data)
         {
-            productRepository.Update(data);
+            _productRepository.Update(data);
             string locationUrl = "<script>parent.location.href='" + Url.Action(nameof(List)) + "'</script>";
             return Content(locationUrl);
         }
-        public ActionResult deleteProduct(int productID)
+        public ActionResult DeleteProduct(int productID)
         {
-            productRepository.Delete(productID);
+            _productRepository.Delete(productID);
             string locationUrl = "<script>parent.location.href='" + Url.Action(nameof(List)) + "'</script>";
             return Content(locationUrl);
         }
