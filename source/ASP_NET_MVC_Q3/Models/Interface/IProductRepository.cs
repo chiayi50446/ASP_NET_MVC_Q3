@@ -23,6 +23,6 @@ namespace ASP_NET_MVC_Q3.Models.Interface
 
         int GetUniqueId();
 
-        List<SelectListItem> GetLocaleList(SimpleProductViewModel simpleProduct);
+        List<SelectListItem> GetLocaleList(List<string> defaultLocale);
     }
 }

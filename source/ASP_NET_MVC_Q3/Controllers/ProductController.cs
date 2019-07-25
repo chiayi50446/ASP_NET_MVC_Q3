@@ -13,13 +13,12 @@ namespace ASP_NET_MVC_Q3.Controllers
     public class ProductController : Controller
     {
         private IProductRepository _productRepository;
-        private ProductViewModel _product;
-        private SimpleProductViewModel _simpleProduct;
+        private static ProductViewModel _product;
+        public List<string> DefaultLocale = new List<string>() { "US", "DE", "CA", "ES", "FR", "JP" };
         public ProductController()
         {
-            _product = new ProductViewModel();
+            _product = GetProduct();
             _productRepository = new ProductRepository(_product);
-            _simpleProduct = new SimpleProductViewModel();
         }
         public ActionResult List()
         {
@@ -30,7 +29,7 @@ namespace ASP_NET_MVC_Q3.Controllers
         public ActionResult AddProduct()
         {
             ViewBag.IsColorbox = true;
-            ViewBag.DefaultLocale = _productRepository.GetLocaleList(_simpleProduct);
+            ViewBag.DefaultLocale = _productRepository.GetLocaleList(DefaultLocale);
             return View();
         }
         [HttpPost]
@@ -43,12 +42,13 @@ namespace ASP_NET_MVC_Q3.Controllers
         public ActionResult EditProduct(int productID)
         {
             ViewBag.IsColorbox = true;
-            ViewBag.DefaultLocale = _productRepository.GetLocaleList(_simpleProduct);
+            ViewBag.DefaultLocale = _productRepository.GetLocaleList(DefaultLocale);
             Product source = _productRepository.Get(productID);
-            _simpleProduct.Id = source.Id;
-            _simpleProduct.Locale = source.Locale;
-            _simpleProduct.Name = source.Name;
-            return View(_simpleProduct);
+            SimpleProductViewModel simpleProduct = new SimpleProductViewModel();
+            simpleProduct.Id = source.Id;
+            simpleProduct.Locale = source.Locale;
+            simpleProduct.Name = source.Name;
+            return View(simpleProduct);
         }
         [HttpPost]
         public ActionResult EditProduct(SimpleProductViewModel data)
@@ -62,6 +62,16 @@ namespace ASP_NET_MVC_Q3.Controllers
             _productRepository.Delete(productID);
             string locationUrl = "<script>parent.location.href='" + Url.Action(nameof(List)) + "'</script>";
             return Content(locationUrl);
+        }
+        public static ProductViewModel GetProduct()
+        {
+            if (_product == null)
+            {
+                _product = new ProductViewModel();
+                _product.ProductList = Product.Data;
+                _product.UniqueId = 5;
+            }
+            return _product;
         }
 
     }

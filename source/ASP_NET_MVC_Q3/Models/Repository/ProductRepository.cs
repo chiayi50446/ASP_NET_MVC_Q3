@@ -11,11 +11,10 @@ namespace ASP_NET_MVC_Q3.Models
 {
     public class ProductRepository: IProductRepository
     {
-        protected ProductViewModel _product;
+        private ProductViewModel _product;
         public ProductRepository(ProductViewModel product)
         {
             _product = product;
-            _product.ProductList = Product.Data;
         }
         public void Create(SimpleProductViewModel instance)
         {
@@ -56,13 +55,12 @@ namespace ASP_NET_MVC_Q3.Models
 
         public int GetUniqueId()
         {
-            int maxId = _product.ProductList.Max(t => t.Id);
-            maxId++;
-            return maxId;
+            _product.UniqueId++;
+            return _product.UniqueId;
         }
-        public List<SelectListItem> GetLocaleList(SimpleProductViewModel simpleProduct)
+        public List<SelectListItem> GetLocaleList(List<string> defaultLocale)
         {
-            List<SelectListItem> localeList = simpleProduct.DefaultLocale.Select(s => new SelectListItem()
+            List<SelectListItem> localeList = defaultLocale.Select(s => new SelectListItem()
             {
                 Text = s,
                 Value = s,
